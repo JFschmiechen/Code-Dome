@@ -7,6 +7,8 @@ Instructor: Richard Miles
 Date submitted: 2106/09/??
 */
 
+// This program allows coaches to maintain a small roster of players.
+
 #include <iostream>
 #include <vector>
 using namespace std;
