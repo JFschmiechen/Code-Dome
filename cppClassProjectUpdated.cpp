@@ -7,11 +7,7 @@ Instructor: Richard Miles
 Date submitted: 2016/12/10
 */
 
-/*
-	TODO:
-	-Code might be over commented
-	-Fix bad input ( case 'u', 
-*/
+
 
 #include <iostream>
 #include <vector>
