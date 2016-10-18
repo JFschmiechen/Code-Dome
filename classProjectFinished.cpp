@@ -219,7 +219,7 @@ using namespace std;
 		      	while (!(cin >> jerseyNum)) { // Checks for integer input
 					
 			    	cin.clear();
-				    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			     	cout << "Please enter a numeric value." << endl;
 			      	cout << "Enter player " << i << "'s jersey number: ";
 						
@@ -287,8 +287,8 @@ int main() {
 
 		case 'u': // Update player rating
 		
-                updatePlayerRating( jerseyNum, ratingNum, jersey, rating, playCount );
-                break;
+                		updatePlayerRating( jerseyNum, ratingNum, jersey, rating, playCount );
+               			break;
 
 		case 'o': // Output roster
 
