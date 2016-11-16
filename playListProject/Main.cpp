@@ -72,6 +72,31 @@ void removeSong(PlaylistNode* currObj, PlaylistNode* headObj) {
 	}
 }
 
+void changePos(PlaylistNode* currObj, PlaylistNode* headObj) {
+	int currPos, newPos;
+	PlaylistNode* tempCurrObj, tempNewObj;
+
+	cout << "CHANGE POSITION OF SONG" << endl;
+	cout << "Enter song's current position: ";
+	cin >> currPos;
+	cout << "Enter new position for song: ";
+	cin >> newPos;
+
+	currObj = headObj;
+
+	for (int i = 0; i < currPos || i < newPos; i++) {
+		currObj = currObj->GetNext;
+		headObj = headObj->GetNext;
+		if (i == currPos - 1) {
+			tempCurrObj = currObj->GetNext;
+		}
+		if (i == newPos - 1) {
+			tempNewObj = headObj->GetNext;
+		}
+	}
+
+}
+
 int main() {
 	string menuChoice, ID, songName2, artistName2, playListTitle;
 	int songLength2 = 0;
