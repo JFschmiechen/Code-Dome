@@ -23,7 +23,7 @@ void printPlayList(PlaylistNode* &currObj, PlaylistNode* &headObj) {
 	}
 }
 
-void addSong(string UID, string songNam, string artistNam, int length, PlaylistNode* tailObj, PlaylistNode* headObj) {
+void addSong(int &songCount,  string UID, string songNam, string artistNam, int length, PlaylistNode* tailObj, PlaylistNode* headObj) {
 	cout << "ADD SONG" << endl;
 	cout << "Enter song's unique ID: ";
 	cin >> UID;
@@ -42,12 +42,13 @@ void addSong(string UID, string songNam, string artistNam, int length, PlaylistN
 	}
 	else {
 		tailObj->SetNext(temp);
-		tailObj->InsertAfter(temp);
+		tailObj->InsertAfter(tailObj);
 		tailObj = temp;
 	}
+	songCount++;
 }
 
-void removeSong(PlaylistNode* currObj, PlaylistNode* headObj) {
+void removeSong(int &songCount, PlaylistNode* currObj, PlaylistNode* headObj) {
 	string songID = "";
 	PlaylistNode* follower = headObj;
 	bool flag = true;
@@ -70,11 +71,13 @@ void removeSong(PlaylistNode* currObj, PlaylistNode* headObj) {
 			flag = false;
 		}
 	}
+	songCount--;
 }
 
-void changePos(PlaylistNode* currObj, PlaylistNode* headObj) {
-	int currPos, newPos;
-	PlaylistNode* tempCurrObj, tempNewObj;
+void changePos(int &songCount, PlaylistNode* &currObj, PlaylistNode* &headObj) {
+	int currPos, newPos, i = 0;
+	bool foundCurr = false, foundNew = false;
+	PlaylistNode* tempCurrObj = 0, *tempNewObj = 0, *follower = 0, *temp = 0, *tempHead = headObj;
 
 	cout << "CHANGE POSITION OF SONG" << endl;
 	cout << "Enter song's current position: ";
@@ -84,22 +87,46 @@ void changePos(PlaylistNode* currObj, PlaylistNode* headObj) {
 
 	currObj = headObj;
 
-	for (int i = 0; i < currPos || i < newPos; i++) {
-		currObj = currObj->GetNext;
-		headObj = headObj->GetNext;
+	while (!(foundCurr && foundNew)) {
+		currObj = currObj->GetNext(); // what if you cant find the value?
+		headObj = headObj->GetNext();
 		if (i == currPos - 1) {
-			tempCurrObj = currObj->GetNext;
+			tempCurrObj = currObj; //object to switch
+			foundCurr = true;
+			tempCurrObj->PrintPlaylistNode();
 		}
 		if (i == newPos - 1) {
-			tempNewObj = headObj->GetNext;
+			tempNewObj = headObj;
+			foundNew = true;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+			tempNewObj->PrintPlaylistNode();
 		}
+		i++;
 	}
-
+	headObj = tempHead;
+	if (tempNewObj->GetNext() == NULL) {
+		headObj->SetNext(tempNewObj);
+		tempNewObj->SetNext(tempCurrObj->GetNext());
+		temp = tempCurrObj->GetNext();
+		temp->SetNext(tempCurrObj);
+		tempCurrObj->SetNext(NULL);
+	}
+	else if (tempCurrObj->GetNext() == NULL) {
+		headObj->SetNext(tempCurrObj);
+		tempCurrObj->SetNext(tempNewObj->GetNext());
+		temp = tempNewObj->GetNext();
+		temp->SetNext(tempNewObj);
+		tempNewObj->SetNext(NULL);
+	}
+	if (tempCurrObj == headObj) {
+		headObj = tempCurrObj;
+		tempNewObj->SetNext(tempCurrObj->GetNext());
+		tempCurrObj->SetNext(tempNewObj);
+	}
 }
 
 int main() {
 	string menuChoice, ID, songName2, artistName2, playListTitle;
-	int songLength2 = 0;
+	int songLength2 = 0, songCount = 4;
 
 	cout << "Enter playlist's title: ";
 	cin >> playListTitle;
@@ -132,15 +159,19 @@ int main() {
 		switch (menuChoice[0]) {
 			case 'A':
 			case 'a':
-				addSong(ID, songName2, artistName2, songLength2, tailObj, headObj);
+				addSong(songCount, ID, songName2, artistName2, songLength2, tailObj, headObj);
 				break;
 			case 'D':
 			case 'd':
-				removeSong(currObj, headObj);
+				removeSong(songCount, currObj, headObj);
 				break;
 			case 'O':
 			case 'o':
 				printPlayList(currObj, headObj);
+				break;
+			case 'C':
+			case 'c':
+				changePos(songCount, currObj, headObj);
 				break;
 			default:
 				cout << menuChoice << " is not a menu option.";
