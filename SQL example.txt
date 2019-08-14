@@ -1,0 +1,31 @@
+-- SQL SCHEMA
+
+CREATE TABLE events (
+  EVENT_TYPE VARCHAR(60),
+  SYSTEM_NAME VARCHAR(60)
+);
+
+CREATE TABLE sessions (
+  SYSTEM_NAME VARCHAR(60),
+  USER_NAME VARCHAR(60)
+);
+
+INSERT INTO events (EVENT_TYPE, SYSTEM_NAME) 
+VALUES ('crash', 'testSystem');
+INSERT INTO events (EVENT_TYPE, SYSTEM_NAME) 
+VALUES ('update', 'testSystem');
+INSERT INTO events (EVENT_TYPE, SYSTEM_NAME) 
+VALUES ('update', 'newSystem');
+
+INSERT INTO sessions (SYSTEM_NAME, USER_NAME) 
+VALUES ('testSystem', 'John');
+INSERT INTO sessions (SYSTEM_NAME, USER_NAME) 
+VALUES ('newSystem', 'Jim');
+INSERT INTO sessions (SYSTEM_NAME, USER_NAME) 
+VALUES ('testSystem', 'Jane');
+
+-- QUERY
+
+SELECT USER_NAME FROM sessions WHERE SYSTEM_NAME = ANY (
+	SELECT SYSTEM_NAME FROM events WHERE EVENT_TYPE = 'crash'
+)
